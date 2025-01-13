@@ -39,18 +39,22 @@ public class FlightFilterTest {
     public void departureInThePastTest() {
         List<Flight> expected = List.of(testFlight2, testFlight5);
 
+        FlightListWrapper tempWrapper = new FlightListWrapper(getAllTestFlights());
+
         List<Flight> actual = getAllTestFlights();
-        actual.removeAll(FlightsFilter.departureInThePast(getAllTestFlights()));
+        actual.removeAll(tempWrapper.departureInThePastFilter().applyFiltersAndReturnFilteredFlights());
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void arrivingBeforeDepartureTest() {
+    public void arrivalBeforeDepartureTest() {
         List<Flight> expected = List.of(testFlight3);
 
+        FlightListWrapper tempWrapper = new FlightListWrapper(getAllTestFlights());
+
         List<Flight> actual = getAllTestFlights();
-        actual.removeAll(FlightsFilter.arrivingBeforeDeparture(getAllTestFlights()));
+        actual.removeAll(tempWrapper.arrivalBeforeDepartureFilter().applyFiltersAndReturnFilteredFlights());
 
         assertEquals(expected, actual);
     }
@@ -59,8 +63,10 @@ public class FlightFilterTest {
     public void moreThanTwoHoursOnTheGroundTest() {
         List<Flight> expected = List.of(testFlight4, testFlight5);
 
+        FlightListWrapper tempWrapper = new FlightListWrapper(getAllTestFlights());
+
         List<Flight> actual = getAllTestFlights();
-        actual.removeAll(FlightsFilter.moreThanTwoHoursOnTheGround(getAllTestFlights()));
+        actual.removeAll(tempWrapper.moreThanTwoHoursOnTheGroundFilter().applyFiltersAndReturnFilteredFlights());
 
         assertEquals(expected, actual);
     }
@@ -69,10 +75,11 @@ public class FlightFilterTest {
     public void departureInThePastAndMoreThanTwoHoursOnTheGroundTest() {
         List<Flight> expected = List.of(testFlight5);
 
-        List<Flight> actual = getAllTestFlights();
+        FlightListWrapper tempWrapper = new FlightListWrapper(getAllTestFlights());
 
-        actual.removeAll(FlightsFilter.departureInThePast(actual));
-        actual.removeAll(FlightsFilter.moreThanTwoHoursOnTheGround(getAllTestFlights()));
+        List<Flight> actual = getAllTestFlights();
+        actual.removeAll(tempWrapper.departureInThePastFilter().moreThanTwoHoursOnTheGroundFilter()
+                .applyFiltersAndReturnFilteredFlights());
 
         assertEquals(expected, actual);
     }

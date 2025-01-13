@@ -12,19 +12,19 @@ public class FlightsFilter {
     public static List<Flight> departureInThePast(List<Flight> flightsList) {
         return flightsList.stream()
                 .filter(flight -> flight.getSegments()
-                        .stream().noneMatch(segment -> segment
+                        .stream().anyMatch(segment -> segment
                                 .getDepartureDate().isBefore(currentTime))).toList();
     }
 
-    public static List<Flight> arrivingBeforeDeparture(List<Flight> flightsList) {
+    public static List<Flight> arrivalBeforeDeparture(List<Flight> flightsList) {
         return flightsList.stream()
                 .filter(flight -> flight.getSegments()
-                        .stream().noneMatch(segment -> segment
+                        .stream().anyMatch(segment -> segment
                                 .getDepartureDate().isAfter(segment.getArrivalDate()))).toList();
     }
 
     public static List<Flight> moreThanTwoHoursOnTheGround(List<Flight> flightsList) {
-        List<Flight> filteredFlightsList = new ArrayList<>(flightsList);
+        List<Flight> filteredFlightsList = new ArrayList<>();
 
         for (Flight flight : flightsList) {
             List<Segment> segmentList = flight.getSegments();
@@ -36,7 +36,7 @@ public class FlightsFilter {
             }
 
             if (hoursOnTheGround > 2) {
-                filteredFlightsList.remove(flight);
+                filteredFlightsList.add(flight);
             }
         }
         return filteredFlightsList;
